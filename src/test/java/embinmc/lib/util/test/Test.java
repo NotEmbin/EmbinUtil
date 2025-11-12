@@ -1,5 +1,6 @@
 package embinmc.lib.util.test;
 
+import embinmc.lib.util.ListUtil;
 import embinmc.lib.util.MathUtil;
 import embinmc.lib.util.Util;
 
@@ -29,6 +30,20 @@ public class Test {
         test(() -> MathUtil.powInt(2, 16) == 65536);
         test(() -> MathUtil.powInt(2, 8) == 256);
         test(() -> MathUtil.powInt(10, 5) == 100_000);
+
+        List<String> strList = Util.create(new ArrayList<>(), list -> {
+            list.add("foo");
+            list.add("bar");
+            list.add("doo");
+        });
+        System.out.println(strList);
+        strList.add("wack");
+        System.out.println(strList);
+
+        List<String> strList2 = ListUtil.mutableOf("goobie", "soupie");
+        System.out.println(strList2);
+        strList2.add("noob");
+        System.out.println(strList2);
 
         System.out.println("test success maybe");
     }

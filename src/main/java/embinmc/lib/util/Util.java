@@ -29,7 +29,7 @@ public final class Util {
 
     public static <Z, Q> Optional<Q> ifNotNullReturn(Z thing, Function<Z, Q> function) {
         if (thing != null) {
-            return Optional.of(function.apply(thing));
+            return Optional.ofNullable(function.apply(thing));
         }
         return Optional.empty();
     }
