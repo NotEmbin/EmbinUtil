@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'embinmc.lib'
-version = '1.0.0-rc.1'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -12,6 +12,10 @@ repositories {
     maven {
         url "https://libraries.minecraft.net"
     }
+}
+
+java {
+    withSourcesJar()
 }
 
 shadowJar {
