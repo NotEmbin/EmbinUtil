@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * {@link Optional}-like class specialized for fields.
+ * {@link Optional}-like class.
  */
 @SuppressWarnings({"UnusedReturnValue", "unused", "Convert2Diamond"})
 public final class Temporary<T> {

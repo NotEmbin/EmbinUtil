@@ -3,6 +3,7 @@ package embinmc.lib.util.test;
 import embinmc.lib.util.ListUtil;
 import embinmc.lib.util.MathUtil;
 import embinmc.lib.util.Util;
+import embinmc.lib.util.function.preset.Suppliers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class Test {
         test(() -> MathUtil.powInt(2, 8) == 256);
         test(() -> MathUtil.powInt(10, 5) == 100_000);
         test(Util::always);
+        test(Suppliers.ALWAYS);
 
         List<String> strList = Util.create(new ArrayList<>(), list -> {
             list.add("foo");

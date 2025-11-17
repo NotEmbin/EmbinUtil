@@ -7,13 +7,12 @@ import embinmc.lib.util.ListUtil;
 import embinmc.lib.util.logger.LoggerUtil;
 import org.slf4j.Logger;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
+import javax.annotation.Nullable;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings({"unused"})
 public final class GsonUtil {
@@ -51,5 +50,28 @@ public final class GsonUtil {
         String finalExtension = extension.startsWith(".") ? extension : "." + extension;
         GsonUtil.JSON_EXTENSIONS.add(finalExtension);
         return finalExtension;
+    }
+
+    @Nullable
+    @SuppressWarnings("deprecation")
+    private static JsonObject getJsonFile(String path, boolean required) {
+        File jsonFile = new File(path);
+        try {
+            return GsonUtil.fromInputStream(jsonFile.toURL().openStream());
+        } catch (Exception e) {
+            if (required) {
+                throw new IllegalArgumentException("Can't find required json file: " + jsonFile.getName());
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public static JsonObject getRequiredJsonFile(String path) {
+        return GsonUtil.getJsonFile(path, true);
+    }
+
+    public static Optional<JsonObject> getOptionalJsonFile(String path) {
+        return Optional.ofNullable(GsonUtil.getJsonFile(path, false));
     }
 }

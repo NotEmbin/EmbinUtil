@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'embinmc.lib'
-version = '1.1.0'
+version = '1.2.0'
 
 repositories {
     mavenCentral()
@@ -19,7 +19,7 @@ java {
 }
 
 shadowJar {
-    archiveFileName.set("EmbinUtil_${version}.jar")
+    archiveFileName.set("EmbinUtil-Fat_${version}.jar")
 }
 
 dependencies {

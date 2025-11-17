@@ -6,6 +6,7 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @SuppressWarnings({"unused"})
@@ -35,6 +36,20 @@ public final class CodecUtil {
 
     public static <T> MapCodec<T> withEitherKey(Codec<T> codec, String mainKey, String secondaryKey) {
         return Codec.mapEither(codec.fieldOf(secondaryKey), codec.fieldOf(mainKey)).xmap(
+                either -> either.map(t -> t, t2 -> t2),
+                Either::right
+        );
+    }
+
+    public static <T> MapCodec<T> withEitherOptionalKey(Codec<T> codec, String mainKey, String secondaryKey, T defaultValue) {
+        return Codec.mapEither(codec.optionalFieldOf(secondaryKey, defaultValue), codec.optionalFieldOf(mainKey, defaultValue)).xmap(
+                either -> either.map(t -> t, t2 -> t2),
+                Either::right
+        );
+    }
+
+    public static <T> MapCodec<Optional<T>> withEitherOptionalKey(Codec<T> codec, String mainKey, String secondaryKey) {
+        return Codec.mapEither(codec.optionalFieldOf(secondaryKey), codec.optionalFieldOf(mainKey)).xmap(
                 either -> either.map(t -> t, t2 -> t2),
                 Either::right
         );
