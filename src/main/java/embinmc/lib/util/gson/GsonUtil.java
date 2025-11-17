@@ -21,7 +21,13 @@ public final class GsonUtil {
     public static final List<String> JSON_EXTENSIONS = ListUtil.mutableOf(".json");
 
     public static JsonObject fromInputStream(InputStream inputStream, Charset charset) {
-        return GsonUtil.GSON.fromJson(new InputStreamReader(inputStream, charset), JsonObject.class);
+        JsonObject jsonObject = GsonUtil.GSON.fromJson(new InputStreamReader(inputStream, charset), JsonObject.class);
+        try {
+            inputStream.close();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+        return jsonObject;
     }
 
     public static JsonObject fromInputStream(InputStream inputStream) {
@@ -53,11 +59,10 @@ public final class GsonUtil {
     }
 
     @Nullable
-    @SuppressWarnings("deprecation")
     private static JsonObject getJsonFile(String path, boolean required) {
         File jsonFile = new File(path);
         try {
-            return GsonUtil.fromInputStream(jsonFile.toURL().openStream());
+            return GsonUtil.fromInputStream(jsonFile.toURI().toURL().openStream());
         } catch (Exception e) {
             if (required) {
                 throw new IllegalArgumentException("Can't find required json file: " + jsonFile.getName());
