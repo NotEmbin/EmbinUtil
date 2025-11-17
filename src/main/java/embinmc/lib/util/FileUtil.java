@@ -1,5 +1,6 @@
 package embinmc.lib.util;
 
+import embinmc.lib.util.exception.FileNotFoundRuntimeException;
 import embinmc.lib.util.logger.LoggerUtil;
 import org.slf4j.Logger;
 
@@ -10,13 +11,15 @@ import java.util.List;
 public final class FileUtil {
     public static final Logger LOGGER = LoggerUtil.getBasicLogger();
 
-    public static void createAndWriteFile(String path, String content) {
+    public static boolean createAndWriteFile(String path, String content) {
         try (FileWriter fileWriter = new FileWriter(path)) {
             fileWriter.write(content);
             fileWriter.close();
             FileUtil.LOGGER.info("Wrote to file \"{}\"", path);
+            return true;
         } catch (IOException e) {
-            throw new RuntimeException(e); // should maybe do something else instead of dying
+            FileUtil.LOGGER.error("Failed to write to file %s".formatted(path), e);
+            return false;
         }
     }
 
@@ -32,7 +35,7 @@ public final class FileUtil {
             bufferedReader.close();
             return lines;
         } catch (IOException e) {
-            if (required) throw new RuntimeException("Couldn't get file " + path);
+            if (required) throw new FileNotFoundRuntimeException("Couldn't get file " + path, e);
             FileUtil.LOGGER.warn("Couldn't find file: {}", path);
             return List.of();
         }
