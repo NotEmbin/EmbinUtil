@@ -42,17 +42,18 @@ public final class CodecUtil {
     }
 
     public static <T> MapCodec<T> withEitherOptionalKey(Codec<T> codec, String mainKey, String secondaryKey, T defaultValue) {
-        return Codec.mapEither(codec.optionalFieldOf(secondaryKey, defaultValue), codec.optionalFieldOf(mainKey, defaultValue)).xmap(
-                either -> either.map(t -> t, t2 -> t2),
-                Either::right
-        );
+        return CodecUtil.withEitherKey(codec, mainKey, secondaryKey).orElseGet(() -> defaultValue);
     }
 
     public static <T> MapCodec<Optional<T>> withEitherOptionalKey(Codec<T> codec, String mainKey, String secondaryKey) {
-        return Codec.mapEither(codec.optionalFieldOf(secondaryKey), codec.optionalFieldOf(mainKey)).xmap(
-                either -> either.map(t -> t, t2 -> t2),
-                Either::right
-        );
+        return CodecUtil.withEitherKey(codec, mainKey, secondaryKey)
+                .flatXmap(v -> DataResult.success(Optional.of(v)), CodecUtil::validateExistence)
+                .orElseGet(Optional::empty);
+    }
+
+    private static <T> DataResult<T> validateExistence(Optional<T> value) {
+        if (value.isPresent()) return DataResult.success(value.orElseThrow());
+        return DataResult.error(() -> "No value");
     }
 
     public enum Empty {
