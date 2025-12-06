@@ -1,5 +1,6 @@
 package embinmc.lib.util.test;
 
+import embinmc.lib.util.FileUtil;
 import embinmc.lib.util.ListUtil;
 import embinmc.lib.util.MathUtil;
 import embinmc.lib.util.Util;
@@ -47,6 +48,14 @@ public class Test {
         System.out.println(strList2);
         strList2.add("noob");
         System.out.println(strList2);
+
+        System.out.println("Checking testdir");
+        System.out.println(FileUtil.getPathsInFolder("testdir"));
+        System.out.println(FileUtil.getFoldersInFolder("testdir"));
+
+        System.out.println("Checking testdir2");
+        System.out.println(FileUtil.getPathsInFolder("testdir2"));
+        System.out.println(FileUtil.getFoldersInFolder("testdir2"));
 
         System.out.println("test success maybe");
     }

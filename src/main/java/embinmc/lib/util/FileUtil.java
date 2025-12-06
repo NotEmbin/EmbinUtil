@@ -1,6 +1,5 @@
 package embinmc.lib.util;
 
-import embinmc.lib.util.exception.FileNotFoundRuntimeException;
 import embinmc.lib.util.logger.LoggerUtil;
 import org.slf4j.Logger;
 
@@ -8,9 +7,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("DataFlowIssue")
 public final class FileUtil {
     public static final Logger LOGGER = LoggerUtil.getBasicLogger();
 
+    @SuppressWarnings("StringConcatenationArgumentToLogCall")
     public static boolean createAndWriteFile(String path, String content) {
         try (FileWriter fileWriter = new FileWriter(path)) {
             fileWriter.write(content);
@@ -35,7 +36,7 @@ public final class FileUtil {
             bufferedReader.close();
             return lines;
         } catch (IOException e) {
-            if (required) throw new FileNotFoundRuntimeException("Couldn't get file " + path, e);
+            if (required) throw new UncheckedIOException("Couldn't get file " + path, e);
             FileUtil.LOGGER.warn("Couldn't find file: {}", path);
             return List.of();
         }
@@ -47,10 +48,23 @@ public final class FileUtil {
         if (folder2.isDirectory()) {
             for (File file : folder2.listFiles()) {
                 if (file.isDirectory()) {
-                    paths.addAll(getPathsInFolder(file.getPath()));
+                    paths.addAll(getPathsInFolder(file.getPath().replace('\\', '/')));
                 } else {
-                    paths.add(file.getPath());
+                    paths.add(file.getPath().replace('\\', '/'));
                 }
+            }
+            return paths;
+        } else {
+            return List.of();
+        }
+    }
+
+    public static List<String> getFoldersInFolder(String folder) {
+        File folder2 = new File(folder);
+        List<String> paths = new ArrayList<>(32);
+        if (folder2.isDirectory()) {
+            for (File file : folder2.listFiles()) {
+                if (file.isDirectory()) paths.add(file.getPath().replace('\\', '/'));
             }
             return paths;
         } else {
