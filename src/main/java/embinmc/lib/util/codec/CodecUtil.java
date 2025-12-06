@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+import embinmc.lib.util.Util;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,14 +30,14 @@ public final class CodecUtil {
 
     public static <T> Codec<List<T>> listOrSingle(Codec<T> entryCodec) {
         return Codec.either(entryCodec.listOf(), entryCodec).xmap(
-            either -> either.map(list -> list, List::of),
+            either -> either.map(Util::itself, List::of),
             list -> list.size() == 1 ? Either.right(list.getFirst()) : Either.left(list)
         );
     }
 
     public static <T> MapCodec<T> withEitherKey(Codec<T> codec, String mainKey, String secondaryKey) {
         return Codec.mapEither(codec.fieldOf(secondaryKey), codec.fieldOf(mainKey)).xmap(
-                either -> either.map(t -> t, t2 -> t2),
+                either -> either.map(Util::itself, Util::itself),
                 Either::right
         );
     }
@@ -51,6 +52,7 @@ public final class CodecUtil {
                 .orElseGet(Optional::empty);
     }
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private static <T> DataResult<T> validateExistence(Optional<T> value) {
         if (value.isPresent()) return DataResult.success(value.orElseThrow());
         return DataResult.error(() -> "No value");

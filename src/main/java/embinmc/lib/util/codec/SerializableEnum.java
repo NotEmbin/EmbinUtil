@@ -17,10 +17,9 @@ public interface SerializableEnum<T extends Enum<T>> {
     }
 
     private static <T extends Enum<T> & SerializableEnum<T>> DataResult<T> validate(String value, Class<T> clazz) {
-        try {
-            return DataResult.success(T.valueOf(clazz, value.toUpperCase()));
-        } catch (IllegalArgumentException _) {
-            return DataResult.error(() -> "\"%s\" is not a valid %s!".formatted(value, clazz.getSimpleName()));
+        for (T enumValue : clazz.getEnumConstants()) {
+            if (enumValue.isString(value)) return DataResult.success(enumValue);
         }
+        return DataResult.error(() -> "\"%s\" is not a valid %s!".formatted(value, clazz.getSimpleName()));
     }
 }

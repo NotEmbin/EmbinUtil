@@ -67,4 +67,9 @@ public final class Util {
     public static boolean never() {
         return false;
     }
+
+    @UseAsLambda
+    public static <T> T itself(T thing) {
+        return thing;
+    }
 }
