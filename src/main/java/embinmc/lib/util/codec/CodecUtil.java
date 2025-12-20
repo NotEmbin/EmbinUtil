@@ -1,6 +1,7 @@
 package embinmc.lib.util.codec;
 
 import com.mojang.datafixers.util.Either;
+import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
@@ -12,7 +13,7 @@ import java.util.function.Function;
 
 @SuppressWarnings({"unused"})
 public final class CodecUtil {
-    public static final Codec<Empty> EMPTY = Codec.unit(Empty.INSTANCE);
+    public static final Codec<Unit> DFU_UNIT = MapCodec.unitCodec(Unit.INSTANCE);
     public static Codec<Integer> POSITIVE_INT = rangedInt(1, Integer.MAX_VALUE, v -> "Value \"" + v + "\" must be positive");
     public static Codec<Integer> NON_NEGATIVE_INT = rangedInt(0, Integer.MAX_VALUE, v -> "Value \"" + v + "\" cannot be negative");
 
@@ -56,9 +57,5 @@ public final class CodecUtil {
     private static <T> DataResult<T> validateExistence(Optional<T> value) {
         if (value.isPresent()) return DataResult.success(value.orElseThrow());
         return DataResult.error(() -> "No value");
-    }
-
-    public enum Empty {
-        INSTANCE
     }
 }

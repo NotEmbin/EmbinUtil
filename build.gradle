@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'embinmc.lib'
-version = '1.3.0'
+version = '1.4.0'
 
 repositories {
     mavenCentral()
@@ -26,7 +26,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    implementation 'com.mojang:datafixerupper:8.0.18'
+    implementation 'com.mojang:datafixerupper:9.0.19'
     implementation 'com.google.code.gson:gson:2.11.0'
 
     implementation platform('org.apache.logging.log4j:log4j-bom:2.25.2')
