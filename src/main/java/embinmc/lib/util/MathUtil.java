@@ -1,5 +1,7 @@
 package embinmc.lib.util;
 
+import com.mojang.datafixers.DataFixUtils;
+
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
@@ -23,11 +25,11 @@ public final class MathUtil {
     }
 
     /**
-     * @param min Inclusive
-     * @param max Inclusive
+     * @param minInclusive Inclusive
+     * @param maxInclusive Inclusive
      */
-    public static int randomInt(int min, int max) {
-        return MathUtil.RANDOM.nextInt(min, max + 1);
+    public static int randomInt(int minInclusive, int maxInclusive) {
+        return MathUtil.RANDOM.nextInt(minInclusive, maxInclusive + 1);
     }
 
     public static double lerp(double amount, double min, double max) {
@@ -60,15 +62,8 @@ public final class MathUtil {
         return modded;
     }
 
-    // http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
     public static int smallestEncompassingPowerOf2(int value) {
-        int v = value - 1;
-        v |= v >> 1;
-        v |= v >> 2;
-        v |= v >> 4;
-        v |= v >> 8;
-        v |= v >> 16;
-        return v + 1;
+        return DataFixUtils.smallestEncompassingPowerOfTwo(value);
     }
 
     public static int floor(final float value) {
