@@ -1,12 +1,14 @@
 package embinmc.lib.util.codec;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.Keyable;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 @SuppressWarnings({"unused"})
-public interface SerializableEnum<T extends Enum<T>> {
+public interface SerializableEnum<T> {
     String asString();
     Codec<T> codec();
 
@@ -14,24 +16,28 @@ public interface SerializableEnum<T extends Enum<T>> {
         return this.asString().equals(string);
     }
 
-    static <T extends Enum<T> & SerializableEnum<T>> Codec<T> getCodec(T[] values) {
-        if (values.length == 0) throw new IllegalStateException("Can't serialize enum with no values!");
-        return Codec.STRING.comapFlatMap(s -> validate(s, values), T::asString);
+    static <T extends SerializableEnum<T>> EnumCodec<T> getCodec(String name, T[] values) {
+        return new EnumCodec<>(name, values);
     }
 
-    static <T extends Enum<T> & SerializableEnum<T>> Codec<T> getCodec(Class<T> clazz) {
-        return SerializableEnum.getCodec(clazz.getEnumConstants());
+    static <T extends SerializableEnum<T>> EnumCodec<T> getCodec(T[] values) {
+        return SerializableEnum.getCodec(getNameOrThrow(values), values);
     }
 
-    private static <T extends Enum<T> & SerializableEnum<T>> DataResult<T> validate(String value, final T[] enumConstants) {
-        if (enumConstants.length == 0) return DataResult.error(() -> "Can't serialize enum with no values!");
-        for (T enumValue : enumConstants) {
-            if (enumValue.isString(value)) return DataResult.success(enumValue);
-        }
-        return DataResult.error(() -> "\"%s\" is not a valid %s!".formatted(value, getNameOrThrow(enumConstants)));
+    static <T extends Enum<T> & SerializableEnum<T>> EnumCodec<T> getCodec(Class<T> clazz) {
+        return new EnumCodec<>(clazz.getSimpleName(), clazz.getEnumConstants());
     }
 
     private static <T> String getNameOrThrow(final T[] values) {
         return Arrays.stream(values).findAny().orElseThrow().getClass().getSimpleName();
+    }
+
+    static <T> Keyable asKeyable(SerializableEnum<T>[] values) {
+        return new Keyable() {
+            @Override
+            public <D> Stream<D> keys(DynamicOps<D> ops) {
+                return Arrays.stream(values).map(SerializableEnum::asString).map(ops::createString);
+            }
+        };
     }
 }

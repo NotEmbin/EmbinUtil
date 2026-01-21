@@ -8,6 +8,7 @@ import com.mojang.serialization.MapCodec;
 import embinmc.lib.util.Util;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -48,6 +49,14 @@ public final class CodecUtil {
         return CodecUtil.withEitherKey(codec, mainKey, secondaryKey)
                 .flatXmap(v -> DataResult.success(Optional.of(v)), CodecUtil::validateExistence)
                 .orElseGet(Optional::empty);
+    }
+
+    public static <T> Codec<List<T>> nonEmptyList(Codec<List<T>> codec) {
+        return codec.validate(list -> list.isEmpty() ? DataResult.error(() -> "List cannot be empty") : DataResult.success(list));
+    }
+
+    public static <T extends Map<?, ?>> Codec<T> nonEmptyMap(Codec<T> codec) {
+        return codec.validate(map -> map.isEmpty() ? DataResult.error(() -> "Map cannot be empty") : DataResult.success(map));
     }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")

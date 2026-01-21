@@ -1,5 +1,7 @@
 package embinmc.lib.util;
 
+import embinmc.lib.util.annotation.NotNull;
+
 import java.util.*;
 import java.util.function.Function;
 
@@ -14,7 +16,7 @@ public final class ListUtil {
         return results;
     }
 
-    public static <X> Optional<X> getRandomFromList(List<X> list) {
+    public static <X> Optional<X> getRandomFromList(@NotNull List<X> list) {
         if (list.isEmpty()) return Optional.empty();
         return Optional.of(list.get(MathUtil.randomInt(0, list.size() - 1)));
     }

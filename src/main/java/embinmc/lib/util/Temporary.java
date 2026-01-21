@@ -1,7 +1,7 @@
 package embinmc.lib.util;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import embinmc.lib.util.annotation.NotNull;
+import embinmc.lib.util.annotation.Nullable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,7 +24,7 @@ public final class Temporary<T> {
         return new Temporary<T>(null);
     }
 
-    public static <T> Temporary<T> with(@Nonnull T value) {
+    public static <T> Temporary<T> with(@NotNull T value) {
         return new Temporary<T>(Objects.requireNonNull(value));
     }
 
@@ -37,7 +37,7 @@ public final class Temporary<T> {
         return this;
     }
 
-    public Temporary<T> setNewValue(@Nonnull T newValue) {
+    public Temporary<T> setNewValue(@NotNull T newValue) {
         this.value = newValue;
         return this;
     }

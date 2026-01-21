@@ -1,5 +1,6 @@
 package embinmc.lib.util;
 
+import embinmc.lib.util.annotation.Nullable;
 import embinmc.lib.util.annotation.UseAsLambda;
 import embinmc.lib.util.exception.NotNullException;
 
@@ -22,20 +23,20 @@ public final class Util {
         }
     }
 
-    public static <Z> void ifNotNull(Z thing, Consumer<Z> function) {
+    public static <Z> void ifNotNull(@Nullable Z thing, Consumer<Z> function) {
         if (thing != null) {
             function.accept(thing);
         }
     }
 
-    public static <Z, Q> Optional<Q> ifNotNullReturn(Z thing, Function<Z, Q> function) {
+    public static <Z, Q> Optional<Q> ifNotNullReturn(@Nullable Z thing, Function<Z, Q> function) {
         if (thing != null) {
             return Optional.ofNullable(function.apply(thing));
         }
         return Optional.empty();
     }
 
-    public static <T> void requireNull(T thing, String message) {
+    public static <T> void requireNull(@Nullable T thing, String message) {
         if (thing != null) throw new NotNullException(message);
     }
 

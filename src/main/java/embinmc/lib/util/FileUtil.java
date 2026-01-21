@@ -1,5 +1,6 @@
 package embinmc.lib.util;
 
+import embinmc.lib.util.annotation.NotNull;
 import embinmc.lib.util.logger.LoggerUtil;
 import org.slf4j.Logger;
 
@@ -24,6 +25,7 @@ public final class FileUtil {
         }
     }
 
+    @NotNull
     public static List<String> getFileContents(String path, final boolean required) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             ArrayList<String> lines = new ArrayList<>();
@@ -42,6 +44,7 @@ public final class FileUtil {
         }
     }
 
+    @NotNull
     public static List<String> getPathsInFolder(String folder) {
         File folder2 = new File(folder);
         List<String> paths = new ArrayList<>(32);
@@ -59,6 +62,7 @@ public final class FileUtil {
         }
     }
 
+    @NotNull
     public static List<String> getFoldersInFolder(String folder) {
         File folder2 = new File(folder);
         List<String> paths = new ArrayList<>(32);
