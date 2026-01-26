@@ -1,5 +1,6 @@
 package embinmc.lib.util;
 
+import embinmc.lib.util.annotation.NotNull;
 import embinmc.lib.util.annotation.Nullable;
 import embinmc.lib.util.annotation.UseAsLambda;
 import embinmc.lib.util.exception.NotNullException;
@@ -7,6 +8,7 @@ import embinmc.lib.util.exception.NotNullException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.IntConsumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"unused"})
@@ -20,7 +22,7 @@ public final class Util {
      * <p>The supplied integer is the index.</p>
      * <p>Index starts at 1.</p>
      */
-    public static void repeat(int amount, Consumer<Integer> action) {
+    public static void repeat(int amount, IntConsumer action) {
         for (int index = 1; index <= amount; index++) {
             action.accept(index);
         }
@@ -32,7 +34,7 @@ public final class Util {
         }
     }
 
-    public static <Z, Q> Optional<Q> ifNotNullReturn(@Nullable Z thing, Function<Z, Q> function) {
+    public static <Z, Q> Optional<Q> ifNotNullReturn(@Nullable Z thing, Function<@NotNull Z, @Nullable Q> function) {
         if (thing != null) {
             return Optional.ofNullable(function.apply(thing));
         }
@@ -48,6 +50,7 @@ public final class Util {
         return thing;
     }
 
+    @Deprecated
     public static <T> T create(Supplier<T> supplier) {
         return supplier.get();
     }
@@ -83,5 +86,9 @@ public final class Util {
 
     public static void enforceNoInstance() {
         throw new UnsupportedOperationException("Attempted to create instance of a class that does not allow instances");
+    }
+
+    public static <T> @NotNull T orElse(@Nullable T input, @NotNull T orElse) {
+        return input != null ? input : orElse;
     }
 }

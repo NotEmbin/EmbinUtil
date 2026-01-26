@@ -3,6 +3,7 @@ package embinmc.lib.util.codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.codecs.PrimitiveCodec;
+import embinmc.lib.util.annotation.NotNull;
 import embinmc.lib.util.annotation.Nullable;
 
 import java.util.function.Supplier;
@@ -11,11 +12,12 @@ public class EnumCodec<T extends SerializableEnum<T>> implements PrimitiveCodec<
     protected final T[] values;
     protected final String name;
 
-    EnumCodec(String name, T[] valueArray) {
+    EnumCodec(@NotNull String name, @NotNull T[] valueArray) {
         this.values = valueArray;
         this.name = name;
     }
 
+    @NotNull
     private DataResult<T> fromStringResult(String string) {
         if (this.values.length == 0) return DataResult.error(() -> "Can't serialize enum with no values!");
         for (T enumValue : this.values) {
@@ -42,7 +44,8 @@ public class EnumCodec<T extends SerializableEnum<T>> implements PrimitiveCodec<
         return null;
     }
 
-    public T fromString(String string, T defaultValue) {
+    @NotNull
+    public T fromString(String string, @NotNull T defaultValue) {
         final T result = this.fromString(string);
         return result != null ? result : defaultValue;
     }

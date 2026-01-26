@@ -18,8 +18,8 @@ import java.util.Optional;
 
 @SuppressWarnings({"unused"})
 public final class GsonUtil {
-    private static final Gson GSON = new GsonBuilder().create();
     private static final Logger LOGGER = LoggerUtil.getLogger();
+    public static final Gson GSON = new GsonBuilder().serializeNulls().setStrictness(Strictness.STRICT).create();
     public static final List<String> JSON_EXTENSIONS = ListUtil.mutableOf(".json");
 
     public static JsonElement fromInputStream(InputStream inputStream, Charset charset) {
@@ -61,7 +61,7 @@ public final class GsonUtil {
     }
 
     @Nullable
-    private static JsonElement getJsonFile(String path, boolean required) {
+    public static JsonElement getJsonFile(String path, boolean required) {
         File jsonFile = new File(path);
         try {
             return GsonUtil.fromInputStream(jsonFile.toURI().toURL().openStream());

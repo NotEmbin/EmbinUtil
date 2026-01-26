@@ -2,7 +2,7 @@ package embinmc.lib.util.command;
 
 import com.mojang.brigadier.StringReader;
 import embinmc.lib.util.Util;
-import it.unimi.dsi.fastutil.chars.CharPredicate;
+import embinmc.lib.util.function.CharPredicate;
 
 public final class ArgumentUtil {
     private ArgumentUtil() {
@@ -17,7 +17,15 @@ public final class ArgumentUtil {
         return reader.getString().substring(start, reader.getCursor());
     }
 
+    /**
+     * @deprecated Use {@link ArgumentUtil#greedyReadNoSpaces(StringReader)} instead.
+     */
+    @Deprecated
     public static String greedyRead(final StringReader reader) {
+        return ArgumentUtil.greedyRead(reader, c -> c != ' ');
+    }
+
+    public static String greedyReadNoSpaces(final StringReader reader) {
         return ArgumentUtil.greedyRead(reader, c -> c != ' ');
     }
 }

@@ -44,47 +44,55 @@ public final class MathUtil {
         return ((max - min) * amount) + min;
     }
 
-    public static double lerpOf(double value, double min, double max) {
-        return (value - min) / (max - min);
+    public static double lerpOf(double input, double min, double max) {
+        return (input - min) / (max - min);
     }
 
-    public static boolean isPositive(int value) {
-        return value > 0;
+    public static boolean isPositive(int input) {
+        return input > 0;
     }
 
-    public static boolean isNegative(int value) {
-        return value < 0;
+    public static boolean isNegative(int input) {
+        return input < 0;
     }
 
-    public static boolean isPositive(double value) {
-        return value > 0.0D;
+    public static boolean isPositive(double input) {
+        return input > 0.0D;
     }
 
-    public static boolean isNegative(double value) {
-        return value < 0.0D;
+    public static boolean isNegative(double input) {
+        return input < 0.0D;
     }
 
-    public static int modulo(int value, int mod) {
-        int modded = value % mod;
+    public static boolean isPositive(float input) {
+        return input > 0f;
+    }
+
+    public static boolean isNegative(float input) {
+        return input < 0f;
+    }
+
+    public static int modulo(int input, int mod) {
+        int modded = input % mod;
         if (modded < 0) modded = modded + mod;
         return modded;
     }
 
-    public static int smallestEncompassingPowerOf2(int value) {
-        return DataFixUtils.smallestEncompassingPowerOfTwo(value);
+    public static int smallestEncompassingPowerOf2(int input) {
+        return DataFixUtils.smallestEncompassingPowerOfTwo(input);
     }
 
-    public static int floor(final float value) {
-        int i = (int)value;
-        return value < (float)i ? i - 1 : i;
+    public static int floor(final float input) {
+        int i = (int)input;
+        return input < (float)i ? i - 1 : i;
     }
 
-    public static int floor(final double value) {
-        int i = (int)value;
-        return value < (double)i ? i - 1 : i;
+    public static int floor(final double input) {
+        int i = (int)input;
+        return input < (double)i ? i - 1 : i;
     }
 
-    public static float sin(float value) {
-        return MathUtil.SINE_TABLE[(int) (value * 10430.378f) & 65535];
+    public static float sin(float input) {
+        return MathUtil.SINE_TABLE[(int) (input * 10430.378f) & 65535];
     }
 }

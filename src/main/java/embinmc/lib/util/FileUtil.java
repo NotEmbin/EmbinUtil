@@ -8,11 +8,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("DataFlowIssue")
+@SuppressWarnings({"DataFlowIssue"})
 public final class FileUtil {
     public static final Logger LOGGER = LoggerUtil.getBasicLogger();
 
-    @SuppressWarnings("StringConcatenationArgumentToLogCall")
+    @SuppressWarnings({"StringConcatenationArgumentToLogCall"})
     public static boolean createAndWriteFile(String path, String content) {
         try (FileWriter fileWriter = new FileWriter(path)) {
             fileWriter.write(content);

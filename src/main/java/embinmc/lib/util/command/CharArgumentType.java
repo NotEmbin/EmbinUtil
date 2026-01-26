@@ -22,7 +22,7 @@ public class CharArgumentType implements ArgumentType<Character> {
     @Override
     public Character parse(StringReader reader) throws CommandSyntaxException {
         final int start = reader.getCursor();
-        final String result = reader.readUnquotedString();
+        final String result = reader.readString();
         if (result.length() == 1) {
             return result.charAt(0);
         }

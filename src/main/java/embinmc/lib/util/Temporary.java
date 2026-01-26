@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings({"UnusedReturnValue", "unused", "Convert2Diamond"})
 public final class Temporary<T> {
-    @Nullable private T value;
+    private @Nullable T value;
 
     private Temporary(@Nullable T value) {
         this.value = value;
@@ -46,13 +46,13 @@ public final class Temporary<T> {
         return this.value != null;
     }
 
-    public void ifPresent(Consumer<? super T> action) {
+    public void ifPresent(@NotNull Consumer<? super T> action) {
         if (this.isPresent()) {
             action.accept(this.value);
         }
     }
 
-    public void ifPresentThenClear(Consumer<? super T> action) {
+    public void ifPresentThenClear(@NotNull Consumer<? super T> action) {
         if (this.isPresent()) {
             action.accept(this.value);
             this.clear();
@@ -62,7 +62,7 @@ public final class Temporary<T> {
     /**
      * Clears the value being held after use.
      */
-    public void ifPresentOrElse(Consumer<? super T> action, Runnable elseAction) {
+    public void ifPresentOrElse(@NotNull Consumer<? super T> action, @NotNull Runnable elseAction) {
         if (this.isPresent()) {
             action.accept(this.value);
             this.clear();
@@ -82,7 +82,7 @@ public final class Temporary<T> {
         return this.getValue();
     }
 
-    public <U> Optional<U> map(Function<? super T, ? extends U> mapper) {
+    public <U> Optional<U> map(@NotNull Function<? super T, ? extends U> mapper) {
         return this.getValue().map(mapper);
     }
 
@@ -95,7 +95,7 @@ public final class Temporary<T> {
         return Objects.requireNonNull(this.value);
     }
 
-    public T orElseGet(Supplier<? extends T> supplier) {
+    public T orElseGet(@NotNull Supplier<? extends T> supplier) {
         return this.getValue().orElseGet(supplier);
     }
 

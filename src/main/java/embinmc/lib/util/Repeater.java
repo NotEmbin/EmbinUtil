@@ -1,21 +1,21 @@
 package embinmc.lib.util;
 
 import java.util.Objects;
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 @SuppressWarnings({"UnusedReturnValue", "unused"})
 public final class Repeater {
     private int index;
     private int timesRepeated;
-    private Consumer<Integer> action;
+    private IntConsumer action;
 
-    private Repeater(int repeatAmount, Consumer<Integer> action, int timesRepeated) {
+    private Repeater(int repeatAmount, IntConsumer action, int timesRepeated) {
         this.index = repeatAmount;
         this.action = Objects.requireNonNull(action);
         this.timesRepeated = timesRepeated;
     }
 
-    public static Repeater create(int repeatAmount, Consumer<Integer> action) {
+    public static Repeater create(int repeatAmount, IntConsumer action) {
         return new Repeater(repeatAmount, action, 0);
     }
 
@@ -36,7 +36,7 @@ public final class Repeater {
         return this;
     }
 
-    public Repeater overrideAction(Consumer<Integer> action) {
+    public Repeater overrideAction(IntConsumer action) {
         this.action = action;
         return this;
     }
